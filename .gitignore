@@ -1,0 +1,11 @@
+# Virtual envs
+.venv/
+venv/
+
+# Outputs and logs
+outputs/
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
