@@ -6,6 +6,7 @@ This project builds on your Round 1A PDF outline extractor to produce persona�
 
 ## 📦 Project Structure
 
+```bash
 round1b/
 ├── collections/
 │ ├── round_1b_001/
@@ -27,7 +28,7 @@ round1b/
 ├── requirements.txt
 └── Dockerfile
 
-
+```
 
 ---
 
@@ -36,12 +37,14 @@ round1b/
 - **Python** 3.11 (container base)
 - **Dependencies** (in `requirements.txt`):
 
+```bash
+
 pymupdf==1.26.3
 numpy==1.25.0
 scikit-learn==1.3.0
 pytest==7.4.0
 python-dotenv==1.0.0
-
+```
 
 - **No internet** access during Docker run
 - **CPU-only**, AMD64
@@ -55,50 +58,57 @@ python-dotenv==1.0.0
 3. **Build** the Docker image (from `round1b/` folder):
  ```bash
  docker build --platform linux/amd64 -t pdf-intel-r1b .
+```
 
 Local (non‑Docker) Usage
 If someone wants to run it straight in Python (e.g. for development), show how to set up the venv and run:
+```bash
 
 python -m venv .venv
 source .venv/bin/activate       # or .\\.venv\\Scripts\\Activate.ps1
 pip install -r requirements.txt
 python src/main.py collections/round_1b_001
-
+```
 
 Environment Variables / .env
 If you ever introduce configurable settings (like max sections to return, logging level, etc.), note that you use a .env (with python‑dotenv) and give an example:
-
+```bash
 MAX_SECTIONS=10
 LOG_LEVEL=INFO
+```
 
 🚀 Usage
 Single Collection
 Run the container for one collection (e.g. round_1b_001):
 
 Windows (single line)
-
+```bash
 docker run --rm -v "%cd%/collections:/app/collections" -v "%cd%/outputs:/app/outputs" --network none pdf-intel-r1b collections/round_1b_001
+```
 
 Windows (multi-line PowerShell)
+```bash
 
 docker run --rm `
   -v "${PWD}/collections:/app/collections" `
   -v "${PWD}/outputs:/app/outputs" `
   --network none `
   pdf-intel-r1b collections/round_1b_001
-
+```
 
 Linux/macOS
 
+```bash
 docker run --rm \
   -v "$(pwd)/collections:/app/collections" \
   -v "$(pwd)/outputs:/app/outputs" \
   --network none \
   pdf-intel-r1b collections/round_1b_001
-
+```
 
 Batch Process All Collections
 We’ve provided a PowerShell script to process all three folders:
+```bash
 
 # run_all_collections.ps1
 $collections = @("round_1b_001","round_1b_002","round_1b_003")
@@ -112,28 +122,33 @@ foreach ($col in $collections) {
     Write-Host "✅ Done: outputs\$col\challenge1b_output.json"
 }
 Write-Host "🏁 All collections processed!"
+```
 
 Run it from PowerShell:
-
+```bash
 powershell -ExecutionPolicy Bypass -File run_all_collections.ps1
+```
 
 📂 Outputs
 After running, you’ll find for each collection:
+```bash
 
 outputs/
 └── round_1b_00X/
     └── challenge1b_output.json
+```
 
 Each JSON contains:
+```bash
+# metadata: input documents, persona role, job, timestamp
 
-metadata: input documents, persona role, job, timestamp
+# extracted_sections: list of sections with importance_rank
 
-extracted_sections: list of sections with importance_rank
-
-subsection_analysis: section text summaries with ranking
+# subsection_analysis: section text summaries with ranking
+```
 
 🧪 Testing
 Run unit tests locally (requires pytest):
-
+```bash
 pytest -q
-
+```
